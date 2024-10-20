@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
+import SideBar from "./components/SideBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +34,13 @@ export default function RootLayout({
       >
         <AppRouterCacheProvider options={{ key: "css" }}>
           <ThemeProvider theme={theme}></ThemeProvider>
-          {children}
+          <div style={{ display: "flex", minHeight: "100vh" }}>
+            <div style={{ flexShrink: 0 }}>
+              <SideBar />
+            </div>
+
+            <div style={{ flexGrow: 1, padding: "20px" }}>{children}</div>
+          </div>
         </AppRouterCacheProvider>
       </body>
     </html>
