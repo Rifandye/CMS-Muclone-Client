@@ -1,39 +1,38 @@
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import Image from "next/image";
-import { redirect } from "next/navigation";
-import { LoginResponse } from "../types/auth.types";
-import { cookies } from "next/headers";
 import { red } from "@mui/material/colors";
+import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { RegisterResponse } from "../types/auth.types";
 
-export default function Login() {
-  const handleLogin = async (formData: FormData) => {
+export default function Register() {
+  const handleRegister = async (formData: FormData) => {
     "use server";
+
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
     const response = await fetch(
-      process.env.NEXT_PUBLIC_BASE_URL + "/auth/login",
+      process.env.NEXT_PUBLIC_BASE_URL + "/auth/register",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       }
     );
 
-    const result: LoginResponse = await response.json();
+    const result: RegisterResponse = await response.json();
 
     if (result.message === "error") {
     }
 
-    cookies().set("Authorization", `Bearer ${result.data.access_token}`, {
-      httpOnly: true,
-    });
-
-    return redirect("/");
+    return redirect("/login");
   };
+
   return (
     <main className="flex">
       <div className="flex-1 h-screen p-8 bg-white">
@@ -47,8 +46,8 @@ export default function Login() {
         </div>
       </div>
       <form
+        action={handleRegister}
         className="flex-1 p-8 h-screen bg-white flex flex-col justify-evenly"
-        action={handleLogin}
       >
         <Image
           src="/reddevils.png"
@@ -57,13 +56,35 @@ export default function Login() {
           alt="Mu logo"
         ></Image>
         <div className="flex flex-col gap-1">
-          <p className="text-black text-2xl">Welcome Back</p>
+          <p className="text-black text-2xl">Hi Reds!</p>
           <p className="text-black text-sm opacity-50">
-            This Website allow you to manage the content that displayed in MU
-            Clone Public Website
+            Registering for Content Management System. You Need The Approval of
+            Super-Admin, It may take a while.
           </p>
         </div>
         <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <p className="text-black">First Name</p>
+            <TextField
+              id="firstName"
+              name="firstName"
+              variant="outlined"
+              color="error"
+              size="small"
+              hiddenLabel
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-black">Last Name</p>
+            <TextField
+              id="lastName"
+              name="lastName"
+              variant="outlined"
+              color="error"
+              size="small"
+              hiddenLabel
+            />
+          </div>
           <div className="flex flex-col gap-1">
             <p className="text-black">Email</p>
             <TextField
@@ -71,6 +92,7 @@ export default function Login() {
               name="email"
               variant="outlined"
               color="error"
+              size="small"
               hiddenLabel
             />
           </div>
@@ -82,6 +104,7 @@ export default function Login() {
               variant="outlined"
               color="error"
               type="password"
+              size="small"
               hiddenLabel
             />
           </div>
@@ -103,12 +126,12 @@ export default function Login() {
         </div>
         <div className="flex flex-col gap-3 ">
           <Button type="submit" variant="contained" color="error">
-            Login
+            Register
           </Button>
           <p className="text-center text-black">
-            Don&apos;t Have an Account?{" "}
-            <Link href="/register">
-              <span className="underline cursor-pointer">Register</span>
+            Already Have an Account?
+            <Link href="/login">
+              <span className="underline cursor-pointer">Login</span>
             </Link>
           </p>
         </div>

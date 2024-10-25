@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Content Management System - MU Clone",
+  title: "CMS - MU Clone",
   description: "Content Management System - MU Clone",
 };
 
