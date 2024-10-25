@@ -4,8 +4,13 @@
     "next/typescript",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["prettier"],
+  "plugins": [
+    "prettier",
+    "import"
+  ],
   "rules": {
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "sort-imports": "error",
+    "sort-keys": "off"
   }
 }

@@ -8,7 +8,7 @@ export default function SideBar() {
 
   return (
     <aside
-      className={`bg-white h-screen flex flex-col transition-all duration-300 rounded-tr-2xl rounded-br-2xl shadow-lg  ${
+      className={`bg-white h-screen flex flex-col fixed transition-all duration-300 rounded-tr-2xl rounded-br-2xl shadow-lg  ${
         isHovered ? "w-64" : "w-16"
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -19,6 +19,7 @@ export default function SideBar() {
           src="/reddevils.png"
           height={30}
           width={30}
+          quality={100}
           alt="Manchester United Logo"
         ></Image>
         <p
