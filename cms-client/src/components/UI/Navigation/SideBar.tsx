@@ -12,6 +12,10 @@ export default function SideBar() {
       label: "Merchandise",
       route: "dashboard/merchandise",
     },
+    {
+      label: "Caregory",
+      route: "dashboard/category",
+    },
   ];
 
   return (
