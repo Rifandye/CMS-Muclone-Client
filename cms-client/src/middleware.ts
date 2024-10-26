@@ -7,7 +7,7 @@ export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(path);
 
-  const token = cookies().get("Authorization")?.value.split(" ")[1];
+  const token = (await cookies()).get("Authorization")?.value.split(" ")[1];
 
   if (isProtectedRoute && !token) {
     NextResponse.redirect(new URL("/login", req.nextUrl));
