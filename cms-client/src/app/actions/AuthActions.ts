@@ -32,7 +32,7 @@ export async function LoginAction(formData: FormData) {
       }
     );
 
-    return redirect("/");
+    return redirect("/dashboard");
   }
 }
 
