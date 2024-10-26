@@ -7,6 +7,13 @@ import NavigationButton from "../Buttons/NavigationsButton";
 export default function SideBar() {
   const [isHovered, setIsHovered] = useState(false);
 
+  const storeContent = [
+    {
+      label: "Merchandise",
+      route: "dashboard/merchandise",
+    },
+  ];
+
   return (
     <div
       className={`bg-white text-black sticky h-screen transition-all duration-300 flex flex-col overflow-hidden shadow-lg border-r border-gray-300 ${
@@ -32,7 +39,11 @@ export default function SideBar() {
         </p>
       </div>
       <div className="flex flex-col p-2">
-        <NavigationButton title="Store" isHovered={isHovered} />
+        <NavigationButton
+          title="Store"
+          isHovered={isHovered}
+          menuItems={storeContent}
+        />
       </div>
     </div>
   );
