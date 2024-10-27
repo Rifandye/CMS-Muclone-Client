@@ -20,7 +20,7 @@ export default function SideBar() {
 
   return (
     <div
-      className={`bg-white text-black sticky h-screen transition-all duration-300 flex flex-col overflow-hidden shadow-lg border-r border-gray-300 ${
+      className={`bg-white text-black sticky top-0 h-screen transition-all duration-300 flex flex-col overflow-hidden shadow-lg border-r border-gray-300 ${
         isHovered ? "w-64" : "w-16"
       }`}
       onMouseEnter={() => setIsHovered(true)}

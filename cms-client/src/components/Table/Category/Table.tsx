@@ -1,38 +1,39 @@
-import { BaseApiResponse } from "@/app/types/base.types";
+import { BaseApiResponse, TableHeader } from "@/app/types/base.types";
 import DataTable from "../Table";
 import { CmsCategoryList } from "@/app/types/category.types";
+import { cookies } from "next/headers";
 
 export default async function CategoryTable() {
-  const getAllCategories = async (): Promise<
-    BaseApiResponse<CmsCategoryList[]>
-  > => {
+  const categoryTableHeaders = [
+    {
+      name: "Name",
+      key: "name",
+      align: "left",
+    },
+  ] as TableHeader[];
+
+  const getAllCategories = async () => {
+    const token = (await cookies()).get("Authorization")?.value.split(" ")[1];
+
     const response = await fetch(
       process.env.NEXT_PUBLIC_BASE_URL + "/category",
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    const data = await response.json();
-    return data;
+    const data: BaseApiResponse<CmsCategoryList[]> = await response.json();
+
+    return data.data as CmsCategoryList[];
   };
 
-  const categoryData: BaseApiResponse<CmsCategoryList[]> =
-    await getAllCategories();
-
-  const tableHeaders = [
-    {
-      name: "Name",
-      align: "left",
-    },
-  ];
+  const categories = await getAllCategories();
 
   return (
-    <div>
-      <DataTable data={categoryData} headers={tableHeaders}></DataTable>
-    </div>
+    <DataTable headers={categoryTableHeaders} data={categories}></DataTable>
   );
 }

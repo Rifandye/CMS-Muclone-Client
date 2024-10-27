@@ -4,6 +4,8 @@ export interface BaseApiResponse<T = unknown> {
   data: T | T[];
 }
 
-export interface TableHeaders {
+export interface TableHeader {
   name: string;
+  key: string;
+  align: "center" | "left" | "right" | "inherit" | "justify";
 }
