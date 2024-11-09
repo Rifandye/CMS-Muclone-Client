@@ -10,11 +10,11 @@ export default function SideBar() {
   const storeContent = [
     {
       label: "Merchandise",
-      route: "dashboard/merchandise",
+      route: "/dashboard/merchandise",
     },
     {
       label: "Caregory",
-      route: "dashboard/category",
+      route: "/dashboard/category",
     },
   ];
 

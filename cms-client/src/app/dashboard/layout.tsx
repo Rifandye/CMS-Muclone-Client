@@ -10,7 +10,7 @@ export default function DashboardLayout({
   return (
     <section className="flex">
       <SideBar />
-      <main className="flex-1 transition-all duration-300 bg-gray-100 p-5">
+      <main className="flex-1 transition-all duration-300 bg-gray-100 p-10">
         {children}
       </main>
     </section>
