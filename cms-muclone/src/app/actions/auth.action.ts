@@ -32,5 +32,5 @@ export async function login(prevState: LoginState, formData: FormData) {
 
   (await cookies()).set("Authorization", `Bearer ${result.data.access_token}`);
 
-  redirect("/");
+  redirect("/dashboard");
 }
