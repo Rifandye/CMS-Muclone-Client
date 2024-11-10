@@ -16,7 +16,7 @@ export default function DashboardLayout({
           <section className="tw-bg-white tw-shadow-md">
             <Navbar />
           </section>
-          <section className="tw-bg-gray-300 tw-flex-1 tw-p-3">
+          <section className="tw-bg-gray-300 tw-flex-1 tw-p-5">
             {children}
           </section>
         </div>
