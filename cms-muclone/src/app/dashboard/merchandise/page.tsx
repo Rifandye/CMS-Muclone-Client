@@ -3,29 +3,32 @@
 import { fetchMerchandises } from "@/app/actions/merchandise.actions";
 import Modal from "@/components/dashboard/ui/Modal";
 import DataTable from "@/components/DataTable";
+import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Merchandise() {
-  const [merchandises, setMerchandises] = useState([]);
-  const [createModal, setCreateModal] = useState(false);
+  const [merchandises, setMerchandises] = useState<MerchandiseList[]>([]);
+  const [createModal, setCreateModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchMerchandiseData() {
-      const data = await fetchMerchandises();
-
-      setMerchandises(data);
+      setLoading(true);
+      try {
+        const data = await fetchMerchandises();
+        setMerchandises(data);
+      } catch (error) {
+        console.error(error, "Error Fetching Merchandise Data");
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchMerchandiseData();
   }, []);
 
   const TableHeaders = [
-    {
-      field: "id",
-      headerName: "No",
-      width: 150,
-    },
     {
       field: "name",
       headerName: "Name",
@@ -34,6 +37,16 @@ export default function Merchandise() {
     {
       field: "slug",
       headerName: "Slug",
+      width: 150,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 150,
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
       width: 150,
     },
     {
@@ -54,8 +67,12 @@ export default function Merchandise() {
           Create Merchandise
         </Button>
       </div>
-      <div className="tw-h-[500px]">
-        <DataTable rows={merchandises} columns={TableHeaders} />
+      <div className="tw-h-full">
+        <DataTable
+          rows={merchandises}
+          columns={TableHeaders}
+          loading={loading}
+        />
       </div>
       <Modal open={createModal}></Modal>
     </main>

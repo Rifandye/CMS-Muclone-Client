@@ -1,4 +1,4 @@
-export interface CmsCategoryList {
+export interface CategoryList {
   id: string;
   name: string;
 }

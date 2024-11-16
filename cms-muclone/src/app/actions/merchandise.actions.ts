@@ -1,5 +1,7 @@
 "use server";
 
+import { BaseApiResponse } from "@/lib/types/base.types";
+import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { cookies } from "next/headers";
 
 export async function fetchMerchandises() {
@@ -18,9 +20,7 @@ export async function fetchMerchandises() {
     }
   );
 
-  const data = await response.json();
-
-  console.log(data.data, "<<<< Data");
+  const data: BaseApiResponse<MerchandiseList[]> = await response.json();
 
   return data?.data;
 }

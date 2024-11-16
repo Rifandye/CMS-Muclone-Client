@@ -1,7 +1,7 @@
 "use server";
 
 import { BaseApiResponse } from "@/lib/types/base.types";
-import { CmsCategoryList } from "@/lib/types/category.types";
+import { CategoryList } from "@/lib/types/category.types";
 import { cookies } from "next/headers";
 
 export async function fetchCategories() {
@@ -17,7 +17,7 @@ export async function fetchCategories() {
     },
   });
 
-  const data: BaseApiResponse<CmsCategoryList[]> = await response.json();
+  const data: BaseApiResponse<CategoryList[]> = await response.json();
 
   return data?.data;
 }
