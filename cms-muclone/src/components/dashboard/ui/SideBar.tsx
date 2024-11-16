@@ -43,7 +43,6 @@ export default function SideBar() {
           menuItems={storeContent}
         />
       </div>
-      <div className="">This is Profile Section</div>
     </main>
   );
 }

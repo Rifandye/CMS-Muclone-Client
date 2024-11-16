@@ -4,6 +4,7 @@ import { fetchMerchandises } from "@/app/actions/merchandise.actions";
 import Modal from "@/components/dashboard/ui/Modal";
 import DataTable from "@/components/DataTable";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
+import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -32,27 +33,33 @@ export default function Merchandise() {
     {
       field: "name",
       headerName: "Name",
-      width: 150,
+      flex: 1,
     },
     {
       field: "slug",
       headerName: "Slug",
-      width: 150,
+      flex: 1,
     },
     {
       field: "price",
       headerName: "Price",
-      width: 150,
+      flex: 1,
+      valueGetter: (item: number) => {
+        return formatCurrency(item);
+      },
     },
     {
       field: "stock",
       headerName: "Stock",
-      width: 150,
+      flex: 1,
     },
     {
       field: "createdAt",
       headerName: "Created At",
-      width: 150,
+      flex: 1,
+      valueGetter: (item: string) => {
+        return formatDate(item, { withTime: true });
+      },
     },
   ];
 
