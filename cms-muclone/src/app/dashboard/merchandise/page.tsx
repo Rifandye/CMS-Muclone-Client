@@ -1,8 +1,8 @@
 "use client";
 
 import { fetchMerchandises } from "@/app/actions/merchandise.actions";
-import Modal from "@/components/dashboard/ui/Modal";
 import DataTable from "@/components/DataTable";
+import CreateMerchandise from "@/components/Modal/Merchandise/CreateMerchandise";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { Button } from "@mui/material";
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 export default function Merchandise() {
   const [merchandises, setMerchandises] = useState<MerchandiseList[]>([]);
   const [createModal, setCreateModal] = useState<boolean>(false);
+
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -63,14 +64,18 @@ export default function Merchandise() {
     },
   ];
 
-  function onClickCreate() {
+  const handleCreateModal = () => {
     setCreateModal(true);
-  }
+  };
+
+  const handleCloseModal = () => {
+    setCreateModal(false);
+  };
 
   return (
     <main className="tw-w-full tw-h-full tw-bg-white tw-flex tw-flex-col tw-gap-3 tw-rounded-lg tw-p-3">
       <div>
-        <Button variant="contained" size="small" onClick={onClickCreate}>
+        <Button variant="contained" size="small" onClick={handleCreateModal}>
           Create Merchandise
         </Button>
       </div>
@@ -81,7 +86,7 @@ export default function Merchandise() {
           loading={loading}
         />
       </div>
-      <Modal open={createModal}></Modal>
+      <CreateMerchandise open={createModal} onClose={handleCloseModal} />
     </main>
   );
 }

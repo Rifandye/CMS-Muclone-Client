@@ -1,3 +1,8 @@
+export interface CreateMerchandiseState {
+  message: string;
+  status: boolean;
+}
+
 export interface MerchandiseList {
   id: string;
   name: string;
