@@ -1,11 +1,4 @@
-import { LoadingButton } from "@mui/lab";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Modal({
@@ -14,9 +7,7 @@ export default function Modal({
   height = "750px",
   width = "600px",
   title,
-  loading,
   onClose,
-  onSubmit,
 }: {
   open?: boolean;
   children?: React.ReactNode;
@@ -25,7 +16,6 @@ export default function Modal({
   title: string;
   loading?: boolean;
   onClose?: () => void;
-  onSubmit?: () => void;
 }) {
   const [isOpen, setOpen] = useState(false);
 
@@ -44,29 +34,29 @@ export default function Modal({
 
   return (
     <main>
-      <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>{title}</DialogTitle>
-        <div
-          style={{
+      <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
             height: typeof height === "number" ? `${height}px` : height,
             width: typeof width === "number" ? `${width}px` : width,
+            display: "flex",
+            flexDirection: "column",
+          },
+        }}
+      >
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent
+          style={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <DialogContent>{children}</DialogContent>
-        </div>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          {/* <Button disabled={loading} onClick={onSubmit}>
-            Subscribe
-          </Button> */}
-          <LoadingButton
-            loading={loading}
-            variant="outlined"
-            onClick={onSubmit}
-          >
-            Submit
-          </LoadingButton>
-        </DialogActions>
+          {children}
+        </DialogContent>
       </Dialog>
     </main>
   );

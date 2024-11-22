@@ -20,7 +20,7 @@ export default function SideBar() {
 
   return (
     <main
-      className={`tw-h-screen tw-transition-all tw-duration-300 tw-shadow-lg ${
+      className={`tw-h-screen tw-bg-[#2c2f36] tw-transition-all tw-duration-300 tw-shadow-tw-rounded-tr-xl tw-rounded-br-xl tw-rounded-tr-xl tw-overflow-hidden ${
         isHovered
           ? "tw-w-[300px] tw-flex tw-flex-col"
           : "tw-w-[80px] tw-flex tw-flex-col"

@@ -52,6 +52,7 @@ export default function NavigationButton({
           <p
             style={{
               marginLeft: "10px",
+              display: isHovered ? "inline" : "none",
             }}
           >
             {title}

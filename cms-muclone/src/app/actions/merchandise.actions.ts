@@ -37,10 +37,14 @@ export async function createMerchandise(
   const token = authorization?.value.split(" ")[1];
 
   const name = formData.get("name");
+  const slug = formData.get("slug");
   const price = formData.get("price");
   const stock = formData.get("stock");
   const description = formData.get("description");
-  const categories = formData.getAll("categories");
+  const rawCategories = formData.getAll("categories");
+  const categories = rawCategories
+    .flatMap((cat) => (typeof cat === "string" ? cat.split(",") : []))
+    .map((cat) => cat.trim());
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + "/merchandise",
@@ -51,16 +55,23 @@ export async function createMerchandise(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ name, price, stock, description, categories }),
+      body: JSON.stringify({
+        name,
+        slug,
+        price,
+        stock,
+        description,
+        categories,
+      }),
     }
   );
 
-  await response.json();
+  const data = await response.json();
 
-  if (!response.ok) {
+  if (data?.status !== "success") {
     return {
       ...prevState,
-      message: "Invalid Email/Password",
+      message: "Creating Merchandise Failed",
       status: true,
     };
   }
