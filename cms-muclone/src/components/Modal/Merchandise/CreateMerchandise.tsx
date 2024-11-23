@@ -161,7 +161,6 @@ export default function CreateMerchandise({
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}
-        color="success"
         onClose={handleSnackbarClose}
         message={state.message}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
