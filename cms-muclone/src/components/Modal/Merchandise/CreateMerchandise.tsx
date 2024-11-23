@@ -6,10 +6,11 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Snackbar,
   TextField,
 } from "@mui/material";
 import Modal from "../Modal";
-import { useActionState, useEffect, useState } from "react";
+import { SyntheticEvent, useActionState, useEffect, useState } from "react";
 import { CreateMerchandiseState } from "@/lib/types/merchandise.types";
 import { createMerchandise } from "@/app/actions/merchandise.actions";
 import { LoadingButton } from "@mui/lab";
@@ -33,6 +34,7 @@ export default function CreateMerchandise({
     createMerchandise,
     initialState
   );
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const handleChange = (event: SelectChangeEvent<typeof categories>) => {
     const {
@@ -62,10 +64,20 @@ export default function CreateMerchandise({
 
   useEffect(() => {
     if (state.status) {
+      setOpenSnackbar(true);
       if (onClose) onClose();
       if (refetchData) refetchData();
+      state.status = false;
     }
-  }, [state.status, onClose, refetchData]);
+  }, [state.status, state.message, onClose, refetchData, state]);
+
+  const handleSnackbarClose = (
+    event?: SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") return;
+    setOpenSnackbar(false);
+  };
 
   return (
     <main>
@@ -81,9 +93,6 @@ export default function CreateMerchandise({
           action={formAction}
         >
           <div className="tw-flex-1 tw-flex tw-flex-col tw-gap-4">
-            {state?.message && (
-              <p className="tw-text-red-500">{state?.message}</p>
-            )}
             <TextField id="name" name="name" label="Name" color="error" />
             <TextField id="slug" name="slug" label="Slug" color="error" />
             <TextField
@@ -149,6 +158,14 @@ export default function CreateMerchandise({
           </div>
         </form>
       </Modal>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        color="success"
+        onClose={handleSnackbarClose}
+        message={state.message}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </main>
   );
 }

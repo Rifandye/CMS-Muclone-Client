@@ -1,19 +1,23 @@
 "use server";
 
-import { BaseApiResponse } from "@/lib/types/base.types";
+import {
+  BaseApiResponse,
+  BasePaginationResponse,
+} from "@/lib/types/base.types";
 import {
   CreateMerchandiseState,
   MerchandiseList,
 } from "@/lib/types/merchandise.types";
 import { cookies } from "next/headers";
 
-export async function fetchMerchandises() {
+export async function fetchMerchandises(page: number, pageSize: number) {
   const cookieStore = await cookies();
   const authorization = cookieStore.get("Authorization");
   const token = authorization?.value.split(" ")[1];
 
   const response = await fetch(
-    process.env.NEXT_PUBLIC_BASE_URL + "/merchandise",
+    process.env.NEXT_PUBLIC_BASE_URL +
+      `/merchandise?page=${page}&size=${pageSize}`,
     {
       method: "GET",
       headers: {
@@ -23,9 +27,10 @@ export async function fetchMerchandises() {
     }
   );
 
-  const data: BaseApiResponse<MerchandiseList[]> = await response.json();
+  const data: BaseApiResponse<BasePaginationResponse<MerchandiseList[]>> =
+    await response.json();
 
-  return data?.data;
+  return data?.data?.data;
 }
 
 export async function createMerchandise(
@@ -72,7 +77,7 @@ export async function createMerchandise(
     return {
       ...prevState,
       message: "Creating Merchandise Failed",
-      status: true,
+      status: false,
     };
   }
 

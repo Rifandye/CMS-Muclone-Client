@@ -20,13 +20,17 @@ export default function SideBar() {
 
   return (
     <main
-      className={`tw-h-screen tw-bg-[#2c2f36] tw-transition-all tw-duration-300 tw-shadow-tw-rounded-tr-xl tw-rounded-br-xl tw-rounded-tr-xl tw-overflow-hidden ${
+      className={`tw-h-screen tw-transition-all tw-duration-300 tw-shadow-tw-rounded-tr-xl tw-rounded-br-xl tw-rounded-tr-xl tw-overflow-hidden ${
         isHovered
           ? "tw-w-[300px] tw-flex tw-flex-col"
           : "tw-w-[80px] tw-flex tw-flex-col"
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: "linear-gradient(to bottom, #f5f5f5, #eaeaea)",
+        borderRight: "1px solid #ddd",
+      }}
     >
       <div className="tw-bg-red-700 tw-h-16 tw-flex tw-items-center tw-justify-center">
         <Image

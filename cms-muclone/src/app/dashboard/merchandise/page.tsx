@@ -3,32 +3,52 @@
 import { fetchMerchandises } from "@/app/actions/merchandise.actions";
 import DataTable from "@/components/DataTable";
 import CreateMerchandise from "@/components/Modal/Merchandise/CreateMerchandise";
+import { BasePaginationResponse } from "@/lib/types/base.types";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function Merchandise() {
-  const [merchandises, setMerchandises] = useState<MerchandiseList[]>([]);
+  const [merchandises, setMerchandises] = useState<
+    BasePaginationResponse<MerchandiseList[]>
+  >({
+    totalItems: 0,
+    totalPages: 0,
+    currentPage: 0,
+    pageSize: 0,
+    data: [],
+  });
   const [createModal, setCreateModal] = useState<boolean>(false);
-
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function fetchMerchandiseData() {
-      setLoading(true);
-      try {
-        const data = await fetchMerchandises();
-        setMerchandises(data);
-      } catch (error) {
-        console.error(error, "Error Fetching Merchandise Data");
-      } finally {
-        setLoading(false);
-      }
-    }
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
 
-    fetchMerchandiseData();
-  }, []);
+  const fetchMerchandiseData = async (page: number, pageSize: number) => {
+    setLoading(true);
+    try {
+      const data = await fetchMerchandises(page, pageSize);
+      setMerchandises(data);
+    } catch (error) {
+      console.error(error, "Error Fetching Merchandise Data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMerchandiseData(paginationModel.page + 1, paginationModel.pageSize);
+  }, [paginationModel]);
+
+  const handlePaginationChange = (newPagination: {
+    page: number;
+    pageSize: number;
+  }) => {
+    setPaginationModel(newPagination);
+  };
 
   const TableHeaders = [
     {
@@ -81,9 +101,12 @@ export default function Merchandise() {
       </div>
       <div className="tw-h-full">
         <DataTable
+          paginationModeProp="server"
           rows={merchandises}
           columns={TableHeaders}
           loading={loading}
+          onPaginationModelChange={handlePaginationChange}
+          paginationModel={paginationModel}
         />
       </div>
       <CreateMerchandise open={createModal} onClose={handleCloseModal} />

@@ -20,9 +20,7 @@ export default function Modal({
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
-    if (open) {
-      setOpen(true);
-    }
+    setOpen(open || false);
   }, [open]);
 
   const handleClose = () => {
