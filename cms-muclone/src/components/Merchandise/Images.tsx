@@ -8,7 +8,7 @@ export default function MerchandiseImages({ data }: { data: IMerchandise }) {
     <main>
       <div className="tw-border tw-border-[#e2e2e2] tw-rounded-lg tw-gap-5 tw-p-4 tw-flex tw-flex-col">
         <div>
-          <p className="tw-text-base tw-font-semibold">Images</p>
+          <p className="tw-text-sm tw-font-semibold">Images</p>
           <Divider />
         </div>
         {hasImages ? (

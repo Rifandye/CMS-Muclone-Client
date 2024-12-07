@@ -1,6 +1,6 @@
 import { IMerchandise } from "@/lib/types/merchandise.types";
 import { formatCurrency } from "@/lib/utils/format";
-import { Divider } from "@mui/material";
+import { Chip, Divider } from "@mui/material";
 import Image from "next/image";
 
 export default function Summary({ data }: { data: IMerchandise }) {
@@ -11,7 +11,7 @@ export default function Summary({ data }: { data: IMerchandise }) {
     <main>
       <div className="tw-flex tw-flex-col tw-border tw-border-[#e2e2e2] tw-rounded-lg tw-gap-3 tw-p-3">
         <div>
-          <p className="tw-text-base tw-font-semibold">Merchandise Summary</p>
+          <p className="tw-text-sm tw-font-semibold">Merchandise Summary</p>
           <Divider />
         </div>
         <div className="tw-flex tw-gap-10">
@@ -37,6 +37,17 @@ export default function Summary({ data }: { data: IMerchandise }) {
                   Slug
                 </p>
                 <p>{data?.slug}</p>
+              </div>
+              <Divider orientation="vertical" />
+              <div className="tw-flex-1">
+                <p className="tw-text-sm tw-font-normal tw-text-gray-400">
+                  Categories
+                </p>
+                <div className="tw-flex tw-gap-3">
+                  {data.Categories.map((item, index) => (
+                    <Chip key={index} label={item.name} size="small" />
+                  ))}
+                </div>
               </div>
               <Divider orientation="vertical" />
               <div className="tw-flex-1">
