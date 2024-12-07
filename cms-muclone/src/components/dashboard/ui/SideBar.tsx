@@ -30,6 +30,7 @@ export default function SideBar() {
       style={{
         background: "linear-gradient(to bottom, #f5f5f5, #eaeaea)",
         borderRight: "1px solid #ddd",
+        boxShadow: "inset 0 10px 24px rgba(0, 0, 0, 0.1)",
       }}
     >
       <div className="tw-bg-red-700 tw-h-16 tw-flex tw-items-center tw-justify-center">

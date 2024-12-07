@@ -3,15 +3,16 @@
 import { fetchMerchandises } from "@/app/actions/merchandise.actions";
 import DataTable from "@/components/DataTable";
 import CreateMerchandise from "@/components/Modal/Merchandise/CreateMerchandise";
+import { useRenderAction } from "@/lib/contexts/ActionContext";
 import { BasePaginationResponse } from "@/lib/types/base.types";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
-import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Merchandise() {
   const router = useRouter();
+  const { setButtonsConfig } = useRenderAction();
 
   const [merchandises, setMerchandises] = useState<
     BasePaginationResponse<MerchandiseList[]>
@@ -45,6 +46,17 @@ export default function Merchandise() {
   useEffect(() => {
     fetchMerchandiseData(paginationModel.page + 1, paginationModel.pageSize);
   }, [paginationModel]);
+
+  useEffect(() => {
+    setButtonsConfig([
+      {
+        type: "create",
+        onClick: handleCreateModal,
+      },
+    ]);
+
+    return () => setButtonsConfig([]);
+  }, [setButtonsConfig]);
 
   const handlePaginationChange = (newPagination: {
     page: number;
@@ -102,11 +114,6 @@ export default function Merchandise() {
 
   return (
     <main className="tw-w-full tw-h-full tw-bg-white tw-flex tw-flex-col tw-gap-3 tw-rounded-lg tw-p-3">
-      <div>
-        <Button variant="contained" size="small" onClick={handleCreateModal}>
-          Create Merchandise
-        </Button>
-      </div>
       <div className="tw-h-full">
         <DataTable
           paginationModeProp="server"
