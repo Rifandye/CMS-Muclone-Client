@@ -9,6 +9,7 @@ export default function DataTable({
   paginationModeProp,
   paginationModel,
   onPaginationModelChange,
+  onRowClick,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: BasePaginationResponse<unknown>;
@@ -20,6 +21,7 @@ export default function DataTable({
     page: number;
     pageSize: number;
   }) => void;
+  onRowClick?: (params: { row: unknown }) => void;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dataRow, setRow] = useState<GridRowsProp | any>([]);
@@ -43,6 +45,7 @@ export default function DataTable({
       onPaginationModelChange={(newModel) => {
         onPaginationModelChange(newModel);
       }}
+      onRowClick={onRowClick}
       sx={{
         height: "100%",
         backgroundColor: "#f5f5f5",

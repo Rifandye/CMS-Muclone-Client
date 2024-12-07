@@ -68,6 +68,7 @@ export default function CreateMerchandise({
       if (onClose) onClose();
       if (refetchData) refetchData();
       state.status = false;
+      setCategories([]);
     }
   }, [state.status, state.message, onClose, refetchData, state]);
 

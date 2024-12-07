@@ -1,7 +1,7 @@
 export interface BaseApiResponse<T = unknown> {
   status: string;
   message: string;
-  data: { data: T };
+  data: T;
 }
 
 export interface BasePaginationResponse<T = unknown> {
@@ -9,5 +9,5 @@ export interface BasePaginationResponse<T = unknown> {
   totalPages: number;
   currentPage: number;
   pageSize: number;
-  data: T;
+  data: T[];
 }

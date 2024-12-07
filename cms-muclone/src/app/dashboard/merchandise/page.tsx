@@ -7,9 +7,12 @@ import { BasePaginationResponse } from "@/lib/types/base.types";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Merchandise() {
+  const router = useRouter();
+
   const [merchandises, setMerchandises] = useState<
     BasePaginationResponse<MerchandiseList[]>
   >({
@@ -92,6 +95,11 @@ export default function Merchandise() {
     setCreateModal(false);
   };
 
+  const handleRowClick = (params: { row: unknown }) => {
+    const merchandise = params.row as { slug: string };
+    router.push(`/dashboard/merchandise/${merchandise.slug}`);
+  };
+
   return (
     <main className="tw-w-full tw-h-full tw-bg-white tw-flex tw-flex-col tw-gap-3 tw-rounded-lg tw-p-3">
       <div>
@@ -107,9 +115,19 @@ export default function Merchandise() {
           loading={loading}
           onPaginationModelChange={handlePaginationChange}
           paginationModel={paginationModel}
+          onRowClick={handleRowClick}
         />
       </div>
-      <CreateMerchandise open={createModal} onClose={handleCloseModal} />
+      <CreateMerchandise
+        open={createModal}
+        onClose={handleCloseModal}
+        refetchData={() =>
+          fetchMerchandiseData(
+            paginationModel.page + 1,
+            paginationModel.pageSize
+          )
+        }
+      />
     </main>
   );
 }
