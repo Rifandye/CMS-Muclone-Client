@@ -107,3 +107,45 @@ export async function createMerchandise(
     status: true,
   };
 }
+
+export async function uploadThumbnail(
+  id: string,
+  file: File,
+  prevState: CreateMerchandiseState
+) {
+  const cookieStore = await cookies();
+  const authorization = cookieStore.get("Authorization");
+  const token = authorization?.value.split(" ")[1];
+
+  const formData = new FormData();
+  formData.append("thumbnail", file);
+
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + `/merchandise/${id}/upload-thumbnail`,
+
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  const data = await response.json();
+
+  if (data?.status !== "success") {
+    return {
+      ...prevState,
+      message: "Creating Merchandise Failed",
+      status: false,
+    };
+  }
+
+  return {
+    ...prevState,
+    message: "Merchandise created successfully!",
+    status: true,
+  };
+}
