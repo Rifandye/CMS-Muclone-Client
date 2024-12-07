@@ -30,7 +30,7 @@ export async function fetchMerchandises(page: number, pageSize: number) {
   const data: BaseApiResponse<BasePaginationResponse<MerchandiseList[]>> =
     await response.json();
 
-  return data?.data?.data;
+  return data?.data;
 }
 
 export async function fetchMerchandiseBySlug({ slug }: { slug: string }) {

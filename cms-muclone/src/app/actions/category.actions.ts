@@ -27,5 +27,5 @@ export async function fetchCategories(page: number, pageSize: number) {
   const data: BaseApiResponse<BasePaginationResponse<CategoryList[]>> =
     await response.json();
 
-  return data?.data?.data;
+  return data?.data;
 }

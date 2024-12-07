@@ -23,7 +23,11 @@ export function formatDate(item: string, options: { withTime?: boolean }) {
   }
 }
 
-export function formatCurrency(amount: number) {
+export function formatCurrency(amount: number | null | undefined) {
+  if (amount === null || amount === undefined) {
+    amount = 0;
+  }
+
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: "GBP",

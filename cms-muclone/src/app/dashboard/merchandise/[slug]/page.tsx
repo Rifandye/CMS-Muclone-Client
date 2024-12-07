@@ -1,4 +1,6 @@
 import { fetchMerchandiseBySlug } from "@/app/actions/merchandise.actions";
+import MerchandiseImages from "@/components/Merchandise/Images";
+import Summary from "@/components/Merchandise/Summary";
 
 export default async function MerchandiseDetail({
   params,
@@ -10,9 +12,9 @@ export default async function MerchandiseDetail({
   const data = await fetchMerchandiseBySlug({ slug });
 
   return (
-    <main>
-      <div>{data.name}</div>
-      <div>Merchandise Detail Page {slug}</div>
+    <main className="tw-flex tw-flex-col tw-gap-4">
+      <Summary data={data} />
+      <MerchandiseImages data={data} />
     </main>
   );
 }
