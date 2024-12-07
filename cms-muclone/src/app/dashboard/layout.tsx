@@ -1,4 +1,5 @@
 import BasePage from "@/components/BasePage";
+import HeaderBar from "@/components/dashboard/ui/Navbar";
 import SideBar from "@/components/dashboard/ui/SideBar";
 import ServerProtectedComponent from "@/components/Protector/ServerProtectedComponent";
 
@@ -15,6 +16,9 @@ export default function DashboardLayout({
             <SideBar />
           </section>
           <div className="tw-flex-1 tw-flex tw-flex-col tw-overflow-auto">
+            <section className="tw-flex tw-h-16">
+              <HeaderBar />
+            </section>
             <section className="tw-flex-1 tw-p-3">
               <BasePage>{children}</BasePage>
             </section>
