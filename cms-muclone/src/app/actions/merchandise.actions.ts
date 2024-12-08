@@ -134,3 +134,30 @@ export async function uploadThumbnail(id: string, file: File) {
 
   revalidatePath(`/merchandise/${data.data.slug}`);
 }
+
+export async function uploadImages(id: string, files: File[]) {
+  const cookieStore = await cookies();
+  const authorization = cookieStore.get("Authorization");
+  const token = authorization?.value.split(" ")[1];
+
+  const formData = new FormData();
+  files.forEach((file) => {
+    formData.append("images", file);
+  });
+
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + `/merchandise/${id}/upload-image`,
+
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  const data: BaseApiResponse<IMerchandise> = await response.json();
+
+  revalidatePath(`/merchandise/${data.data.slug}`);
+}
