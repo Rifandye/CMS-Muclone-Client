@@ -6,8 +6,10 @@ import {
 } from "@/lib/types/base.types";
 import {
   CreateMerchandiseState,
+  IMerchandise,
   MerchandiseList,
 } from "@/lib/types/merchandise.types";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function fetchMerchandises(page: number, pageSize: number) {
@@ -108,11 +110,7 @@ export async function createMerchandise(
   };
 }
 
-export async function uploadThumbnail(
-  id: string,
-  file: File,
-  prevState: CreateMerchandiseState
-) {
+export async function uploadThumbnail(id: string, file: File) {
   const cookieStore = await cookies();
   const authorization = cookieStore.get("Authorization");
   const token = authorization?.value.split(" ")[1];
@@ -126,26 +124,13 @@ export async function uploadThumbnail(
     {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: formData,
     }
   );
 
-  const data = await response.json();
+  const data: BaseApiResponse<IMerchandise> = await response.json();
 
-  if (data?.status !== "success") {
-    return {
-      ...prevState,
-      message: "Creating Merchandise Failed",
-      status: false,
-    };
-  }
-
-  return {
-    ...prevState,
-    message: "Merchandise created successfully!",
-    status: true,
-  };
+  revalidatePath(`/merchandise/${data.data.slug}`);
 }
