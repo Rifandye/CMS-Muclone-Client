@@ -1,12 +1,15 @@
 "use client";
 
 import { fetchMerchandises } from "@/app/actions/merchandise.actions";
+import RoleChip from "@/components/Chips/RoleChip";
 import DataTable from "@/components/DataTable";
 import CreateMerchandise from "@/components/Modal/Merchandise/CreateMerchandise";
 import { useRenderAction } from "@/lib/contexts/ActionContext";
 import { BasePaginationResponse } from "@/lib/types/base.types";
 import { MerchandiseList } from "@/lib/types/merchandise.types";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
+import { Stack } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -97,7 +100,22 @@ export default function Merchandise() {
         return formatDate(item, { withTime: true });
       },
     },
-  ];
+    {
+      field: "createdByUser",
+      headerName: "Created By",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => {
+        const { firstName, lastName, role } = params.row.createdByUser;
+
+        return (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <span>{`${firstName} ${lastName}`}</span>
+            <RoleChip value={role} />
+          </Stack>
+        );
+      },
+    },
+  ] as GridColDef[];
 
   const handleCreateModal = () => {
     setCreateModal(true);

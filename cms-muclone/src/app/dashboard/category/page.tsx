@@ -1,12 +1,14 @@
 "use client";
 
 import { fetchCategories } from "@/app/actions/category.actions";
+import RoleChip from "@/components/Chips/RoleChip";
 import DataTable from "@/components/DataTable";
 import CreateCategory from "@/components/Modal/Category/createCategory";
 import { useRenderAction } from "@/lib/contexts/ActionContext";
 import { BasePaginationResponse } from "@/lib/types/base.types";
 import { CategoryList } from "@/lib/types/category.types";
-import { GridColDef } from "@mui/x-data-grid";
+import { Stack } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
 export default function Category() {
@@ -66,7 +68,27 @@ export default function Category() {
     {
       field: "name",
       headerName: "Name",
-      width: 200,
+      flex: 1,
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      flex: 1,
+    },
+    {
+      field: "createdByUser",
+      headerName: "Created By",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => {
+        const { firstName, lastName, role } = params.row.createdByUser;
+
+        return (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <span>{`${firstName} ${lastName}`}</span>
+            <RoleChip value={role} />
+          </Stack>
+        );
+      },
     },
   ] as GridColDef[];
 

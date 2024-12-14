@@ -1,3 +1,5 @@
+import { IUser } from "./auth.types";
+
 export interface CreateMerchandiseState {
   message: string;
   status: boolean;
@@ -12,7 +14,7 @@ export interface MerchandiseList {
   price: number;
   stock: number;
   createdAt: string;
-  updatedAt: string;
+  createdByUser: IUser;
   Categories: Array<{
     id: string;
     name: string;
@@ -33,6 +35,7 @@ export interface IMerchandise {
   stock: number;
   createdAt: string;
   updatedAt: string;
+  createdByUser: IUser;
   Categories: Array<{
     id: string;
     name: string;
