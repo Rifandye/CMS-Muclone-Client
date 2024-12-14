@@ -12,7 +12,9 @@ export default function Dashboard() {
           alt="Red Devils Logo"
         />
         <Divider orientation="vertical" flexItem />
-        <p>Welcome To Content Management System - MU Clone</p>
+        <p className="tw-text-base tw-font-semibold">
+          Welcome To Content Management System - MU Clone
+        </p>
       </div>
     </main>
   );
