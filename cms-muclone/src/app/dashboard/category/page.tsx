@@ -2,12 +2,16 @@
 
 import { fetchCategories } from "@/app/actions/category.actions";
 import DataTable from "@/components/DataTable";
+import CreateCategory from "@/components/Modal/Category/createCategory";
+import { useRenderAction } from "@/lib/contexts/ActionContext";
 import { BasePaginationResponse } from "@/lib/types/base.types";
 import { CategoryList } from "@/lib/types/category.types";
 import { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
 export default function Category() {
+  const { setButtonsConfig } = useRenderAction();
+
   const [categories, setCategories] = useState<
     BasePaginationResponse<CategoryList[]>
   >({
@@ -22,6 +26,7 @@ export default function Category() {
     page: 0,
     pageSize: 10,
   });
+  const [createModal, setCreateModal] = useState<boolean>(false);
 
   const fetchCategoriesData = async (page: number, pageSize: number) => {
     setLoading(true);
@@ -39,6 +44,17 @@ export default function Category() {
     fetchCategoriesData(paginationModel.page + 1, paginationModel.pageSize);
   }, [paginationModel]);
 
+  useEffect(() => {
+    setButtonsConfig([
+      {
+        type: "create",
+        onClick: handleCreateModal,
+      },
+    ]);
+
+    return () => setButtonsConfig([]);
+  }, [setButtonsConfig]);
+
   const handlePaginationChange = (newPagination: {
     page: number;
     pageSize: number;
@@ -50,9 +66,17 @@ export default function Category() {
     {
       field: "name",
       headerName: "Name",
-      width: 150,
+      width: 200,
     },
   ] as GridColDef[];
+
+  const handleCreateModal = () => {
+    setCreateModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setCreateModal(false);
+  };
 
   return (
     <main className="tw-w-full tw-h-full tw-bg-white tw-flex tw-flex-col tw-rounded-lg tw-p-3">
@@ -66,6 +90,16 @@ export default function Category() {
           paginationModel={paginationModel}
         />
       </div>
+      <CreateCategory
+        open={createModal}
+        onClose={handleCloseModal}
+        refetchData={() =>
+          fetchCategoriesData(
+            paginationModel.page + 1,
+            paginationModel.pageSize
+          )
+        }
+      />
     </main>
   );
 }
