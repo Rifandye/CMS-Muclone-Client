@@ -6,3 +6,10 @@ export interface LoginState {
 export interface LoginResponse {
   access_token: string;
 }
+
+export interface IUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}

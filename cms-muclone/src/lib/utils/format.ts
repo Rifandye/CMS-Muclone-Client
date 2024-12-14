@@ -33,3 +33,8 @@ export function formatCurrency(amount: number | null | undefined) {
     currency: "GBP",
   }).format(amount);
 }
+
+export function capitalizeFirstLetter(value: string) {
+  if (!value) return value;
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
