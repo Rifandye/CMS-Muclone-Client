@@ -51,7 +51,7 @@ export async function fetchMerchandiseBySlug({ slug }: { slug: string }) {
     }
   );
 
-  const data: BaseApiResponse<MerchandiseList> = await response.json();
+  const data: BaseApiResponse<IMerchandise> = await response.json();
   return data?.data;
 }
 
