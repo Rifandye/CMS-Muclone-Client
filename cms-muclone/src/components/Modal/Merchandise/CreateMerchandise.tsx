@@ -11,14 +11,9 @@ import {
 } from "@mui/material";
 import Modal from "../Modal";
 import { SyntheticEvent, useActionState, useEffect, useState } from "react";
-import { CreateMerchandiseState } from "@/lib/types/merchandise.types";
 import { createMerchandise } from "@/app/actions/merchandise.actions";
 import { LoadingButton } from "@mui/lab";
-
-const initialState: CreateMerchandiseState = {
-  message: "",
-  status: false,
-};
+import { initialState } from "@/lib/utils/constant";
 
 export default function CreateMerchandise({
   open,
@@ -30,7 +25,7 @@ export default function CreateMerchandise({
   refetchData?: () => void;
 }) {
   const [categories, setCategories] = useState<string[]>([]);
-  const [state, formAction, isPending] = useActionState(
+  const [state, formAction, pending] = useActionState(
     createMerchandise,
     initialState
   );
@@ -63,14 +58,19 @@ export default function CreateMerchandise({
   ];
 
   useEffect(() => {
-    if (state.status) {
+    if (state.success) {
       setOpenSnackbar(true);
       if (onClose) onClose();
       if (refetchData) refetchData();
-      state.status = false;
+      state.success = undefined;
       setCategories([]);
     }
-  }, [state.status, state.message, onClose, refetchData, state]);
+
+    if (state.success === false) {
+      setOpenSnackbar(true);
+      state.success = undefined;
+    }
+  }, [state.success, state.message, onClose, refetchData, state]);
 
   const handleSnackbarClose = (
     event?: SyntheticEvent | Event,
@@ -86,7 +86,7 @@ export default function CreateMerchandise({
         title="Create Merchandise"
         open={open}
         onClose={onClose}
-        loading={isPending}
+        loading={pending}
       >
         <form
           id="merchandise-form"
@@ -152,7 +152,7 @@ export default function CreateMerchandise({
               type="submit"
               variant="contained"
               color="error"
-              loading={isPending}
+              loading={pending}
             >
               Submit
             </LoadingButton>
