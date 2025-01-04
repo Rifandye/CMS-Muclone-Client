@@ -10,3 +10,7 @@ export const createMerchandiseSchema = z.object({
     .array(z.string())
     .min(1, { message: "At least one category is required" }),
 });
+
+export const createCategorySchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+});
