@@ -14,6 +14,8 @@ import { SyntheticEvent, useActionState, useEffect, useState } from "react";
 import { createMerchandise } from "@/app/actions/merchandise.actions";
 import { LoadingButton } from "@mui/lab";
 import { initialState } from "@/lib/utils/constant";
+import { fetchCategorySelection } from "@/app/actions/category.actions";
+import { CategoryList } from "@/lib/types/category.types";
 
 export default function CreateMerchandise({
   open,
@@ -30,6 +32,7 @@ export default function CreateMerchandise({
     initialState
   );
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [categoryOptions, setCategoryOptions] = useState<CategoryList[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof categories>) => {
     const {
@@ -39,23 +42,18 @@ export default function CreateMerchandise({
     setCategories(typeof value === "string" ? value.split(",") : value);
   };
 
-  const item = [
-    "Men's Apparel",
-    "Women's Apparel",
-    "Kids' Apparel",
-    "Jerseys",
-    "Training Gear",
-    "Footwear",
-    "Accessories",
-    "Bags & Backpacks",
-    "Home & Garden",
-    "Collectibles & Memorabilia",
-    "Toys & Games",
-    "Media & Books",
-    "Fan Gear",
-    "Personalized Merchandise",
-    "Sale & Clearance",
-  ];
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await fetchCategorySelection();
+        setCategoryOptions(data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (state.success) {
@@ -125,14 +123,19 @@ export default function CreateMerchandise({
                 onChange={handleChange}
                 renderValue={(selected) => (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
+                    {selected.map((id) => {
+                      const category = categoryOptions.find(
+                        (option) => option.id === id
+                      );
+                      return category ? (
+                        <Chip key={id} label={category.name} />
+                      ) : null;
+                    })}
                   </Box>
                 )}
               >
-                {item.map((name) => (
-                  <MenuItem key={name} value={name}>
+                {categoryOptions.map(({ id, name }) => (
+                  <MenuItem key={id} value={id}>
                     {name}
                   </MenuItem>
                 ))}
