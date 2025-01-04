@@ -101,12 +101,12 @@ export async function createCategory(
   if (data?.status !== "success") {
     return {
       message: "Creating Category Failed",
-      status: false,
+      success: false,
     };
   }
 
   return {
     message: "Category created successfully!",
-    status: true,
+    success: true,
   };
 }
