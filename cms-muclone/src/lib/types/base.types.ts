@@ -11,3 +11,8 @@ export interface BasePaginationResponse<T = unknown> {
   pageSize: number;
   data: T[];
 }
+
+export interface InitialState {
+  message: string;
+  success?: boolean;
+}

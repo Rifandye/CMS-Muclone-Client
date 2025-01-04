@@ -22,12 +22,9 @@ export default function UpdateThumbnail({
     setThumbnail(newValue);
   };
 
-  console.log(id);
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!thumbnail) {
-      console.log("No file selected");
       return;
     }
 
@@ -41,7 +38,7 @@ export default function UpdateThumbnail({
 
       return result;
     } catch (error) {
-      console.log(error, "error uploading");
+      console.error(error, "error uploading");
     } finally {
       setLoading(false);
     }

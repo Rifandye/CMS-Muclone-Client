@@ -3,9 +3,11 @@
 import {
   BaseApiResponse,
   BasePaginationResponse,
+  InitialState,
 } from "@/lib/types/base.types";
 import { CategoryList } from "@/lib/types/category.types";
-import { CreateMerchandiseState } from "@/lib/types/merchandise.types";
+import { createCategorySchema } from "@/lib/utils/validationSchema";
+
 import { cookies } from "next/headers";
 
 export async function fetchCategories(page: number, pageSize: number) {
@@ -31,8 +33,29 @@ export async function fetchCategories(page: number, pageSize: number) {
   return data?.data;
 }
 
+export async function fetchCategorySelection() {
+  const cookieStore = await cookies();
+  const authorization = cookieStore.get("Authorization");
+  const token = authorization?.value.split(" ")[1];
+
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + `/category/selection`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data: BaseApiResponse<CategoryList[]> = await response.json();
+
+  return data?.data;
+}
+
 export async function createCategory(
-  prevState: CreateMerchandiseState,
+  prevState: InitialState,
   formData: FormData
 ) {
   const cookieStore = await cookies();
@@ -40,6 +63,23 @@ export async function createCategory(
   const token = authorization?.value.split(" ")[1];
 
   const name = formData.get("name");
+
+  const payload = {
+    name,
+  };
+
+  const validatedFields = createCategorySchema.safeParse(payload);
+
+  if (!validatedFields.success) {
+    const errorMessages = validatedFields.error.errors
+      .map((error) => error.message)
+      .join(", ");
+
+    return {
+      message: errorMessages,
+      success: false,
+    };
+  }
 
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + "/category",
@@ -60,14 +100,12 @@ export async function createCategory(
 
   if (data?.status !== "success") {
     return {
-      ...prevState,
       message: "Creating Category Failed",
       status: false,
     };
   }
 
   return {
-    ...prevState,
     message: "Category created successfully!",
     status: true,
   };

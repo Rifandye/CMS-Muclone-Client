@@ -1,14 +1,9 @@
-import { CreateMerchandiseState } from "@/lib/types/merchandise.types";
 import Modal from "../Modal";
 import { Snackbar, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { SyntheticEvent, useActionState, useEffect, useState } from "react";
 import { createCategory } from "@/app/actions/category.actions";
-
-const initialState: CreateMerchandiseState = {
-  message: "",
-  status: false,
-};
+import { initialState } from "@/lib/utils/constant";
 
 export default function CreateCategory({
   open,
@@ -26,13 +21,18 @@ export default function CreateCategory({
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   useEffect(() => {
-    if (state.status) {
+    if (state.success) {
       setOpenSnackbar(true);
       if (onClose) onClose();
       if (refetchData) refetchData();
-      state.status = false;
+      state.success = undefined;
     }
-  }, [state.status, state.message, onClose, refetchData, state]);
+
+    if (state.success === false) {
+      setOpenSnackbar(true);
+      state.success = undefined;
+    }
+  }, [state.success, state.message, onClose, refetchData, state]);
 
   const handleSnackbarClose = (
     event?: SyntheticEvent | Event,
