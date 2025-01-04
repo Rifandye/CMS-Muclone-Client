@@ -3,12 +3,10 @@
 import {
   BaseApiResponse,
   BasePaginationResponse,
+  InitialState,
 } from "@/lib/types/base.types";
-import {
-  CreateMerchandiseState,
-  IMerchandise,
-  MerchandiseList,
-} from "@/lib/types/merchandise.types";
+import { IMerchandise, MerchandiseList } from "@/lib/types/merchandise.types";
+import { createMerchandiseSchema } from "@/lib/utils/validationSchema";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -56,7 +54,7 @@ export async function fetchMerchandiseBySlug({ slug }: { slug: string }) {
 }
 
 export async function createMerchandise(
-  prevState: CreateMerchandiseState,
+  prevState: InitialState,
   formData: FormData
 ) {
   const cookieStore = await cookies();
@@ -73,6 +71,28 @@ export async function createMerchandise(
     .flatMap((cat) => (typeof cat === "string" ? cat.split(",") : []))
     .map((cat) => cat.trim());
 
+  const payload = {
+    name,
+    slug,
+    price,
+    stock,
+    description,
+    categories,
+  };
+
+  const validatedFields = createMerchandiseSchema.safeParse(payload);
+
+  if (!validatedFields.success) {
+    const errorMessages = validatedFields.error.errors
+      .map((error) => error.message)
+      .join(", ");
+
+    return {
+      message: errorMessages,
+      success: false,
+    };
+  }
+
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + "/merchandise",
 
@@ -82,14 +102,7 @@ export async function createMerchandise(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        name,
-        slug,
-        price,
-        stock,
-        description,
-        categories,
-      }),
+      body: JSON.stringify(payload),
     }
   );
 
@@ -97,16 +110,14 @@ export async function createMerchandise(
 
   if (data?.status !== "success") {
     return {
-      ...prevState,
       message: "Creating Merchandise Failed",
-      status: false,
+      success: false,
     };
   }
 
   return {
-    ...prevState,
     message: "Merchandise created successfully!",
-    status: true,
+    success: true,
   };
 }
 
