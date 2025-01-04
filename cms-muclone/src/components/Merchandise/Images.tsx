@@ -44,10 +44,10 @@ export default function MerchandiseImages({ data }: { data: IMerchandise }) {
           <Divider />
         </div>
         {hasImages ? (
-          <div className="tw-grid tw-grid-cols-6 tw-gap-3">
+          <div className="tw-grid tw-grid-cols-6">
             {data.Images.map((item, index) => (
               <div
-                className="tw-border tw-border-[#e2e2e2] tw-rounded-lg tw-h-[300px] tw-w-[200px] tw-relative tw-overflow-hidden"
+                className="tw-border tw-border-[#e2e2e2] tw-rounded-lg tw-h-[300px] tw-w-[230px] tw-relative tw-overflow-hidden"
                 key={index}
               >
                 <Image fill={true} alt={item.id} src={item.url} />
