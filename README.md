@@ -25,8 +25,7 @@ I'm constantly striving to make **CMS-MUClone** better. Upcoming features includ
 
 ## Try It Out
 
-Although this website is still in development and some features might not be available just yet, you can explore it here:  
-[https://muclone.cloud/](https://cms.muclone.cloud/)
+Although this website is still in development and some features might not be available just yet, you can explore it [here](https://cms.muclone.cloud/)
 
 Feel free to log in with the visitor account below:
 
